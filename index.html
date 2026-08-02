@@ -1,1408 +1,1453 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VEXORA - Building Digital Experiences</title>
-  <meta name="description" content="شريكك التقني لبناء تطبيقات Android وiOS، مواقع ومتاجر إلكترونية، وأنظمة إدارة مخصصة" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VEXORA — Building Digital Experiences</title>
+  <meta name="description" content="شركة VEXORA لتطوير تطبيقات Android وiOS، مواقع ومتاجر إلكترونية، وأنظمة إدارة مخصصة بجودة عالية."/>
+  <meta property="og:title" content="VEXORA — Building Digital Experiences"/>
+  <meta property="og:description" content="شريكك التقني الموثوق لبناء تجارب رقمية استثنائية."/>
+  <meta name="theme-color" content="#0a0a0a"/>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <style>
-    /* ==============================
-       CSS RESET & VARIABLES
-    ============================== */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* ─── TOKENS ─────────────────────────────── */
     :root {
-      --bg-primary: #0a0a0a;
-      --bg-secondary: #111111;
-      --bg-card: #141414;
-      --gold: #d4af37;
-      --gold-light: #f0cc60;
-      --gold-dark: #b8942e;
-      --white: #ffffff;
-      --white-80: rgba(255,255,255,0.8);
-      --white-50: rgba(255,255,255,0.5);
-      --white-20: rgba(255,255,255,0.12);
-      --glow: 0 0 20px rgba(212,175,55,0.4);
-      --glow-sm: 0 0 10px rgba(212,175,55,0.25);
-      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-      --radius: 12px;
-      --font: 'Cairo', sans-serif;
+      --bg:        #0a0a0a;
+      --bg2:       #0f0f0f;
+      --bg3:       #141414;
+      --bg4:       #1a1a1a;
+      --gold:      #d4af37;
+      --gold-l:    #f0cc60;
+      --gold-d:    #a8871f;
+      --gold-10:   rgba(212,175,55,.10);
+      --gold-15:   rgba(212,175,55,.15);
+      --gold-25:   rgba(212,175,55,.25);
+      --gold-40:   rgba(212,175,55,.40);
+      --w:         #ffffff;
+      --w80:       rgba(255,255,255,.80);
+      --w60:       rgba(255,255,255,.60);
+      --w40:       rgba(255,255,255,.40);
+      --w12:       rgba(255,255,255,.12);
+      --w06:       rgba(255,255,255,.06);
+      --glow:      0 0 28px rgba(212,175,55,.45);
+      --glow-sm:   0 0 14px rgba(212,175,55,.28);
+      --ease:      cubic-bezier(.4,0,.2,1);
+      --t:         .35s;
+      --r:         14px;
+      --font:      'Cairo', sans-serif;
+      --mono:      'IBM Plex Mono', monospace;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
+    /* ─── RESET ──────────────────────────────── */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; font-size:16px; }
     body {
-      font-family: var(--font);
-      background-color: var(--bg-primary);
-      color: var(--white);
-      direction: rtl;
-      overflow-x: hidden;
-      line-height: 1.7;
+      font-family:var(--font);
+      background:var(--bg);
+      color:var(--w);
+      direction:rtl;
+      overflow-x:hidden;
+      line-height:1.75;
+    }
+    a { text-decoration:none; color:inherit; }
+    ul { list-style:none; }
+    img { max-width:100%; display:block; }
+    button { font-family:var(--font); cursor:pointer; }
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:var(--bg); }
+    ::-webkit-scrollbar-thumb { background:var(--gold-d); border-radius:3px; }
+
+    /* ─── PROGRESS BAR ───────────────────────── */
+    #progress-bar {
+      position:fixed;
+      top:0; right:0; left:0;
+      height:2px;
+      background:linear-gradient(90deg, var(--gold-d), var(--gold-l));
+      transform-origin:right;
+      transform:scaleX(0);
+      z-index:9999;
+      transition:transform .1s linear;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    /* ─── LAYOUT ─────────────────────────────── */
+    .container { width:90%; max-width:1180px; margin:0 auto; }
+    section { position:relative; overflow:hidden; }
+
+    /* ─── TYPOGRAPHY UTILS ───────────────────── */
+    .sec-label {
+      display:inline-flex; align-items:center; gap:.45rem;
+      font-size:.78rem; font-weight:700; letter-spacing:.12em;
+      text-transform:uppercase; color:var(--gold);
+      background:var(--gold-10); border:1px solid var(--gold-25);
+      padding:.35rem .9rem; border-radius:50px;
+      margin-bottom:1.1rem;
+    }
+    .sec-label i { font-size:.65rem; }
+
+    .sec-title {
+      font-size:clamp(1.75rem,3.5vw,2.55rem);
+      font-weight:900; line-height:1.25; margin-bottom:.5rem;
+    }
+    .sec-title .gold { color:var(--gold); }
+
+    .sec-divider {
+      width:56px; height:3px; border-radius:2px;
+      background:linear-gradient(90deg, var(--gold), transparent);
+      margin:.75rem auto 0;
+    }
+    .sec-divider.right { margin-right:0; margin-left:auto; }
+
+    .sec-sub {
+      color:var(--w60); font-size:1.02rem;
+      max-width:580px; margin-inline:auto;
+      margin-top:.75rem; margin-bottom:3.5rem;
+      text-align:center;
     }
 
-    img { max-width: 100%; }
+    /* ─── REVEAL ANIMATIONS ──────────────────── */
+    .reveal {
+      opacity:0;
+      transform:translateY(36px);
+      transition:opacity .7s var(--ease), transform .7s var(--ease);
+    }
+    .reveal.up   { transform:translateY(36px); }
+    .reveal.left { transform:translateX(-36px); }
+    .reveal.right{ transform:translateX(36px); }
+    .reveal.show { opacity:1; transform:translate(0,0); }
+    .d1 { transition-delay:.1s; }
+    .d2 { transition-delay:.2s; }
+    .d3 { transition-delay:.3s; }
+    .d4 { transition-delay:.4s; }
+    .d5 { transition-delay:.5s; }
 
-    /* ==============================
-       SCROLLBAR
-    ============================== */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+    /* ─── BUTTONS ────────────────────────────── */
+    .btn {
+      display:inline-flex; align-items:center; gap:.5rem;
+      font-family:var(--font); font-weight:700; font-size:.9rem;
+      padding:.8rem 1.8rem; border-radius:10px; border:none;
+      cursor:pointer; transition:var(--t) var(--ease);
+      white-space:nowrap;
+    }
+    .btn-gold {
+      background:linear-gradient(135deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%);
+      color:#0a0a0a;
+      box-shadow:var(--glow-sm);
+    }
+    .btn-gold:hover { transform:translateY(-3px); box-shadow:var(--glow); }
+    .btn-ghost {
+      background:transparent;
+      color:var(--w);
+      border:1.5px solid var(--w40);
+    }
+    .btn-ghost:hover { border-color:var(--gold); color:var(--gold); transform:translateY(-3px); }
 
-    /* ==============================
-       UTILITY
-    ============================== */
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* ─── HEADER ─────────────────────────────── */
+    #header {
+      position:fixed; top:0; inset-inline:0; z-index:900;
+      background:rgba(10,10,10,.88);
+      backdrop-filter:blur(20px) saturate(160%);
+      -webkit-backdrop-filter:blur(20px) saturate(160%);
+      border-bottom:1px solid rgba(212,175,55,.12);
+      transition:box-shadow var(--t) var(--ease);
+    }
+    #header.scrolled { box-shadow:0 4px 40px rgba(0,0,0,.7); }
+
+    .nav-wrap {
+      display:flex; align-items:center;
+      justify-content:space-between;
+      height:70px; gap:1rem;
     }
 
-    .section-title {
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-      font-weight: 900;
-      color: var(--white);
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-title span {
-      color: var(--gold);
-    }
-
-    .section-subtitle {
-      text-align: center;
-      color: var(--white-50);
-      font-size: 1.05rem;
-      margin-bottom: 3.5rem;
-      max-width: 600px;
-      margin-inline: auto;
-      margin-top: 0.4rem;
-    }
-
-    .gold-line {
-      width: 70px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--gold), transparent);
-      margin: 0.8rem auto 0;
-      border-radius: 2px;
-    }
-
-    /* ==============================
-       FADE-IN ANIMATION
-    ============================== */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .fade-in-delay-1 { transition-delay: 0.1s; }
-    .fade-in-delay-2 { transition-delay: 0.2s; }
-    .fade-in-delay-3 { transition-delay: 0.3s; }
-    .fade-in-delay-4 { transition-delay: 0.4s; }
-
-    /* ==============================
-       HEADER
-    ============================== */
-    header {
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 0;
-      z-index: 1000;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(212,175,55,0.15);
-      transition: var(--transition);
-    }
-
-    header.scrolled {
-      box-shadow: 0 4px 30px rgba(0,0,0,0.6);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 72px;
-      gap: 1.5rem;
-    }
-
-    /* LOGO */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      flex-shrink: 0;
-    }
-
-    .logo-icon {
-      position: relative;
-      width: 42px;
-      height: 42px;
-    }
-
-    .logo-icon svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.1;
-    }
-
+    /* Logo */
+    .logo-link { display:flex; align-items:center; gap:.7rem; flex-shrink:0; }
+    .logo-svg  { width:44px; height:44px; }
+    .logo-copy { display:flex; flex-direction:column; line-height:1.1; }
     .logo-name {
-      font-size: 1.35rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      color: var(--white);
+      font-size:1.3rem; font-weight:900;
+      letter-spacing:.07em; color:var(--w);
+    }
+    .logo-name b { color:var(--gold); font-weight:900; }
+    .logo-tag {
+      font-size:.55rem; letter-spacing:.18em;
+      text-transform:uppercase; color:var(--gold);
+      font-family:var(--mono);
     }
 
-    .logo-name span {
-      color: var(--gold);
+    /* Desktop nav */
+    .desktop-nav { display:flex; align-items:center; gap:.15rem; }
+    .desktop-nav a {
+      padding:.45rem .9rem; border-radius:8px;
+      font-size:.875rem; font-weight:600; color:var(--w80);
+      transition:color var(--t) var(--ease);
+      position:relative;
     }
-
-    .logo-tagline {
-      font-size: 0.58rem;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+    .desktop-nav a::after {
+      content:'';
+      position:absolute; bottom:4px; right:50%; left:50%;
+      height:1.5px; background:var(--gold);
+      border-radius:1px;
+      transition:right var(--t) var(--ease), left var(--t) var(--ease);
     }
+    .desktop-nav a:hover { color:var(--gold); }
+    .desktop-nav a:hover::after { right:12%; left:12%; }
 
-    /* NAV */
-    nav ul {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-    }
-
-    nav ul li a {
-      padding: 0.45rem 0.9rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--white-80);
-      transition: var(--transition);
-      position: relative;
-    }
-
-    nav ul li a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      right: 50%;
-      left: 50%;
-      height: 2px;
-      background: var(--gold);
-      transition: var(--transition);
-      border-radius: 1px;
-    }
-
-    nav ul li a:hover {
-      color: var(--gold);
-    }
-
-    nav ul li a:hover::after {
-      right: 10%;
-      left: 10%;
-    }
-
-    .btn-nav {
-      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-      color: var(--bg-primary) !important;
-      padding: 0.5rem 1.2rem !important;
-      border-radius: 8px !important;
-      font-weight: 700 !important;
-      white-space: nowrap;
-      box-shadow: var(--glow-sm);
-      transition: var(--transition) !important;
-    }
-
-    .btn-nav::after { display: none !important; }
-
-    .btn-nav:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--glow) !important;
-      color: var(--bg-primary) !important;
-    }
+    .nav-cta { margin-right:.5rem; padding:.55rem 1.3rem !important; font-size:.875rem !important; }
 
     /* Hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-      background: none;
-      border: none;
+    .burger {
+      display:none; flex-direction:column; gap:5px;
+      background:none; border:none; padding:4px;
     }
-
-    .hamburger span {
-      display: block;
-      width: 26px;
-      height: 2px;
-      background: var(--gold);
-      border-radius: 2px;
-      transition: var(--transition);
+    .burger span {
+      display:block; width:24px; height:2px;
+      background:var(--gold); border-radius:2px;
+      transition:var(--t) var(--ease);
     }
-
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
 
     /* Mobile nav */
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      padding: 1rem 0;
-      border-top: 1px solid var(--white-20);
+    .mob-nav {
+      max-height:0; overflow:hidden;
+      transition:max-height .4s var(--ease);
+      border-top:1px solid transparent;
+    }
+    .mob-nav.open {
+      max-height:420px;
+      border-top-color:var(--w12);
+    }
+    .mob-nav a {
+      display:block; padding:.8rem 1rem;
+      font-weight:600; font-size:.9rem; color:var(--w80);
+      border-bottom:1px solid var(--w06);
+      transition:color var(--t) var(--ease), padding var(--t) var(--ease);
+    }
+    .mob-nav a:hover { color:var(--gold); padding-right:1.5rem; }
+    .mob-nav .btn { width:calc(100% - 2rem); margin:1rem; justify-content:center; }
+
+    /* ─── HERO ───────────────────────────────── */
+    #hero {
+      min-height:100svh;
+      display:flex; align-items:center;
+      padding:calc(70px + 3rem) 0 4rem;
+      background:radial-gradient(ellipse 80% 60% at 70% 30%, rgba(212,175,55,.055) 0%, transparent 65%);
     }
 
-    .mobile-nav.open { display: flex; }
-
-    .mobile-nav a {
-      padding: 0.75rem 1rem;
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--white-80);
-      border-bottom: 1px solid var(--white-20);
-      transition: var(--transition);
+    /* Canvas background */
+    #hero-canvas {
+      position:absolute; inset:0;
+      pointer-events:none; z-index:0;
+      opacity:.6;
     }
 
-    .mobile-nav a:hover { color: var(--gold); padding-right: 1.5rem; }
-
-    .mobile-nav .btn-nav {
-      margin: 0.75rem 1rem 0;
-      text-align: center;
-      border-radius: 8px !important;
-      padding: 0.7rem 1rem !important;
-      color: var(--bg-primary) !important;
+    .hero-inner {
+      position:relative; z-index:1;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:3rem; align-items:center;
     }
 
-    /* ==============================
-       HERO
-    ============================== */
-    #home {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      padding-top: 72px;
-    }
-
-    /* Grid background */
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridPulse 8s ease-in-out infinite;
-    }
-
-    @keyframes gridPulse {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; }
-    }
-
-    /* Glow orbs */
-    .hero-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      animation: orbFloat 10s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .hero-orb-1 {
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%);
-      top: -100px;
-      right: -150px;
-      animation-duration: 12s;
-    }
-
-    .hero-orb-2 {
-      width: 350px;
-      height: 350px;
-      background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
-      bottom: -80px;
-      left: -100px;
-      animation-duration: 9s;
-      animation-delay: -4s;
-    }
-
-    @keyframes orbFloat {
-      0%, 100% { transform: translate(0,0) scale(1); }
-      50% { transform: translate(20px,-20px) scale(1.05); }
-    }
-
-    /* Dots */
-    .hero-dots {
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(212,175,55,0.35) 1px, transparent 1px);
-      background-size: 40px 40px;
-      mask-image: radial-gradient(ellipse 70% 70% at 80% 20%, black 0%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 80% 20%, black 0%, transparent 100%);
-      animation: dotsFloat 15s linear infinite;
-    }
-
-    @keyframes dotsFloat {
-      0% { background-position: 0 0; }
-      100% { background-position: 40px 40px; }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 700px;
-      padding: 5rem 0;
-    }
+    .hero-left { max-width:640px; }
 
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(212,175,55,0.1);
-      border: 1px solid rgba(212,175,55,0.3);
-      color: var(--gold);
-      padding: 0.4rem 1rem;
-      border-radius: 50px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.05em;
-      animation: badgePulse 3s ease-in-out infinite;
+      display:inline-flex; align-items:center; gap:.5rem;
+      background:var(--gold-10); border:1px solid var(--gold-25);
+      color:var(--gold); padding:.4rem 1.1rem; border-radius:50px;
+      font-size:.8rem; font-weight:700; margin-bottom:1.6rem;
+      animation:badgePing 3s ease-in-out infinite;
     }
-
-    @keyframes badgePulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.15); }
-      50% { box-shadow: 0 0 0 8px rgba(212,175,55,0); }
+    @keyframes badgePing {
+      0%,100% { box-shadow:0 0 0 0 rgba(212,175,55,.2); }
+      50%      { box-shadow:0 0 0 10px rgba(212,175,55,0); }
     }
-
-    .hero-badge i { font-size: 0.7rem; }
 
     .hero-title {
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 900;
-      line-height: 1.25;
-      margin-bottom: 1.2rem;
-      color: var(--white);
+      font-size:clamp(2.1rem,5.5vw,3.6rem);
+      font-weight:900; line-height:1.2; margin-bottom:1.3rem;
     }
-
-    .hero-title .gold-word {
-      color: var(--gold);
-      text-shadow: 0 0 30px rgba(212,175,55,0.4);
+    .hero-title .accent { color:var(--gold); text-shadow:0 0 40px rgba(212,175,55,.35); }
+    .hero-title .typed-wrap { display:inline-block; }
+    .cursor {
+      display:inline-block; width:3px; height:.85em;
+      background:var(--gold); margin-right:2px;
+      vertical-align:middle;
+      animation:blink .7s step-end infinite;
     }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     .hero-desc {
-      font-size: clamp(0.95rem, 1.8vw, 1.12rem);
-      color: var(--white-80);
-      margin-bottom: 2.5rem;
-      max-width: 580px;
-      font-weight: 400;
+      font-size:clamp(.95rem,1.8vw,1.1rem);
+      color:var(--w80); margin-bottom:2.5rem; max-width:560px;
     }
 
-    .hero-btns {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
+    .hero-btns { display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:3.5rem; }
 
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: var(--bg-primary);
-      font-family: var(--font);
-      font-size: 0.95rem;
-      font-weight: 700;
-      padding: 0.8rem 1.8rem;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      box-shadow: var(--glow-sm);
-      transition: var(--transition);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--glow);
-    }
-
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: transparent;
-      color: var(--white);
-      font-family: var(--font);
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 0.8rem 1.8rem;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.25);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-      transform: translateY(-3px);
-      box-shadow: var(--glow-sm);
-    }
-
-    /* Stats row */
     .hero-stats {
-      display: flex;
-      gap: 2.5rem;
-      margin-top: 3.5rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--white-20);
+      display:flex; gap:0; flex-wrap:wrap;
+      border-top:1px solid var(--w12); padding-top:2rem;
+    }
+    .stat {
+      flex:1; min-width:100px;
+      padding-left:2rem; margin-left:2rem;
+      border-left:1px solid var(--w12);
+    }
+    .stat:last-child { border-left:none; padding-left:0; margin-left:0; }
+    .stat-n {
+      font-size:2rem; font-weight:900; color:var(--gold); line-height:1;
+      font-family:var(--mono);
+    }
+    .stat-l { font-size:.75rem; color:var(--w60); margin-top:.25rem; }
+
+    /* Hero right — floating card */
+    .hero-card {
+      background:var(--bg3);
+      border:1px solid var(--gold-15);
+      border-radius:20px;
+      padding:1.8rem;
+      width:280px;
+      box-shadow:0 0 60px rgba(212,175,55,.08), 0 30px 60px rgba(0,0,0,.5);
+      animation:cardFloat 5s ease-in-out infinite;
+      flex-shrink:0;
+    }
+    @keyframes cardFloat {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-12px); }
+    }
+    .hero-card-head {
+      display:flex; align-items:center; gap:.7rem; margin-bottom:1.4rem;
+    }
+    .hc-dot {
+      width:10px; height:10px; border-radius:50%;
+    }
+    .hc-dot-r { background:#ff5f57; }
+    .hc-dot-y { background:#febc2e; }
+    .hc-dot-g { background:#28c840; }
+
+    .code-line {
+      font-family:var(--mono); font-size:.78rem;
+      line-height:1.9; color:var(--w60);
+      margin-bottom:.2rem;
+    }
+    .code-line .kw  { color:#c792ea; }
+    .code-line .fn  { color:var(--gold-l); }
+    .code-line .str { color:#c3e88d; }
+    .code-line .cm  { color:var(--w40); font-style:italic; }
+    .code-line .num { color:#f78c6c; }
+
+    .hc-bar {
+      height:4px; border-radius:2px;
+      background:linear-gradient(90deg, var(--gold), var(--gold-d));
+      margin-top:1.4rem; position:relative; overflow:visible;
+    }
+    .hc-bar::after {
+      content:'100%';
+      position:absolute; left:-4px; top:50%;
+      transform:translateY(-50%);
+      font-size:.65rem; color:var(--gold); font-family:var(--mono);
     }
 
-    .stat-item {
-      display: flex;
-      flex-direction: column;
+    /* ─── DIVIDER ────────────────────────────── */
+    .wave-divider {
+      height:60px; overflow:hidden; line-height:0;
     }
+    .wave-divider svg { display:block; width:100%; height:100%; }
 
-    .stat-num {
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 0.78rem;
-      color: var(--white-50);
-      margin-top: 0.2rem;
-    }
-
-    /* ==============================
-       SERVICES
-    ============================== */
+    /* ─── SERVICES ───────────────────────────── */
     #services {
-      padding: 100px 0;
-      background: var(--bg-secondary);
-      position: relative;
+      padding:100px 0;
+      background:var(--bg2);
     }
-
     #services::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      content:'';
+      position:absolute; top:0; inset-inline:0; height:1px;
+      background:linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
     .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+      gap:1.25rem;
     }
 
-    .service-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(212,175,55,0.1);
-      border-radius: var(--radius);
-      padding: 2.2rem 1.8rem;
-      text-align: center;
-      cursor: default;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
+    .srv-card {
+      background:var(--bg3);
+      border:1px solid rgba(212,175,55,.08);
+      border-radius:var(--r);
+      padding:2.2rem 1.8rem 2rem;
+      text-align:center;
+      transition:transform var(--t) var(--ease), border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
+      position:relative; overflow:hidden;
+      cursor:default;
+    }
+    .srv-card::before {
+      content:'';
+      position:absolute; inset:0; border-radius:var(--r);
+      background:radial-gradient(circle at 50% -10%, rgba(212,175,55,.07) 0%, transparent 65%);
+      opacity:0; transition:opacity var(--t) var(--ease);
+    }
+    .srv-card:hover {
+      transform:translateY(-10px);
+      border-color:var(--gold-25);
+      box-shadow:0 0 35px rgba(212,175,55,.18), 0 25px 50px rgba(0,0,0,.45);
+    }
+    .srv-card:hover::before { opacity:1; }
+
+    .srv-number {
+      position:absolute; top:1rem; left:1.2rem;
+      font-family:var(--mono); font-size:.7rem;
+      color:var(--gold-25); font-weight:500;
     }
 
-    .service-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: var(--radius);
-      background: radial-gradient(circle at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 70%);
-      opacity: 0;
-      transition: var(--transition);
+    .srv-icon {
+      width:72px; height:72px; margin:0 auto 1.5rem;
+      display:flex; align-items:center; justify-content:center;
+      border-radius:18px;
+      background:var(--gold-10);
+      border:1px solid var(--gold-15);
+      font-size:1.8rem; color:var(--gold);
+      transition:transform var(--t) var(--ease), box-shadow var(--t) var(--ease), background var(--t) var(--ease);
+    }
+    .srv-card:hover .srv-icon {
+      transform:scale(1.1) rotate(-4deg);
+      box-shadow:var(--glow-sm);
+      background:rgba(212,175,55,.16);
     }
 
-    .service-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(212,175,55,0.5);
-      box-shadow: 0 0 30px rgba(212,175,55,0.2), 0 20px 40px rgba(0,0,0,0.4);
+    .srv-card h3 {
+      font-size:1.08rem; font-weight:800; margin-bottom:.65rem;
+    }
+    .srv-card p { font-size:.86rem; color:var(--w60); line-height:1.75; }
+
+    .srv-tags {
+      display:flex; flex-wrap:wrap; justify-content:center;
+      gap:.4rem; margin-top:1.2rem;
+    }
+    .srv-tag {
+      font-size:.7rem; padding:.2rem .6rem; border-radius:4px;
+      background:var(--gold-10); color:var(--gold);
+      border:1px solid var(--gold-15); font-weight:600;
     }
 
-    .service-card:hover::before { opacity: 1; }
-
-    .service-icon {
-      width: 68px;
-      height: 68px;
-      margin: 0 auto 1.4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 16px;
-      background: rgba(212,175,55,0.08);
-      border: 1px solid rgba(212,175,55,0.2);
-      font-size: 1.7rem;
-      color: var(--gold);
-      transition: var(--transition);
+    /* ─── PROCESS ────────────────────────────── */
+    #process {
+      padding:100px 0;
+      background:var(--bg);
     }
 
-    .service-card:hover .service-icon {
-      background: rgba(212,175,55,0.15);
-      box-shadow: var(--glow-sm);
-      transform: scale(1.08);
+    .process-steps {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+      gap:0;
+      position:relative;
+    }
+    .process-steps::before {
+      content:'';
+      position:absolute;
+      top:36px; right:12%; left:12%;
+      height:1px;
+      background:linear-gradient(90deg, transparent, var(--gold-25), var(--gold-40), var(--gold-25), transparent);
     }
 
-    .service-card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 0.7rem;
+    .step {
+      text-align:center; padding:0 1rem;
+      position:relative;
     }
 
-    .service-card p {
-      font-size: 0.88rem;
-      color: var(--white-50);
-      line-height: 1.7;
+    .step-num {
+      width:72px; height:72px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 1.4rem;
+      background:var(--bg3);
+      border:1.5px solid var(--gold-25);
+      font-family:var(--mono); font-size:1rem; font-weight:700;
+      color:var(--gold);
+      position:relative; z-index:1;
+      transition:border-color var(--t) var(--ease), box-shadow var(--t) var(--ease), background var(--t) var(--ease);
+    }
+    .step:hover .step-num {
+      border-color:var(--gold);
+      box-shadow:var(--glow-sm);
+      background:var(--gold-10);
     }
 
-    /* ==============================
-       WHY US
-    ============================== */
+    .step h4 { font-size:1rem; font-weight:800; margin-bottom:.5rem; }
+    .step p  { font-size:.84rem; color:var(--w60); line-height:1.7; }
+
+    /* ─── WHY ────────────────────────────────── */
     #why {
-      padding: 100px 0;
-      position: relative;
+      padding:100px 0;
+      background:var(--bg2);
+    }
+    #why::before {
+      content:'';
+      position:absolute; top:0; inset-inline:0; height:1px;
+      background:linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
     .why-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 2rem;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+      gap:1.5rem;
     }
 
-    .why-item {
-      display: flex;
-      gap: 1.2rem;
-      align-items: flex-start;
+    .why-card {
+      background:var(--bg3);
+      border:1px solid rgba(212,175,55,.08);
+      border-radius:var(--r);
+      padding:1.8rem;
+      display:flex; gap:1.2rem; align-items:flex-start;
+      transition:border-color var(--t) var(--ease), transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+    }
+    .why-card:hover {
+      border-color:var(--gold-25);
+      transform:translateY(-5px);
+      box-shadow:0 0 25px rgba(212,175,55,.1), 0 15px 35px rgba(0,0,0,.35);
     }
 
-    .why-icon-wrap {
-      flex-shrink: 0;
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(212,175,55,0.08);
-      border: 1px solid rgba(212,175,55,0.2);
-      font-size: 1.3rem;
-      color: var(--gold);
-      transition: var(--transition);
+    .why-ico {
+      flex-shrink:0; width:52px; height:52px;
+      border-radius:12px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--gold-10); border:1px solid var(--gold-15);
+      font-size:1.3rem; color:var(--gold);
+      transition:box-shadow var(--t) var(--ease), background var(--t) var(--ease);
     }
+    .why-card:hover .why-ico { box-shadow:var(--glow-sm); background:rgba(212,175,55,.16); }
 
-    .why-item:hover .why-icon-wrap {
-      background: rgba(212,175,55,0.15);
-      box-shadow: var(--glow-sm);
+    .why-body h4 { font-size:.98rem; font-weight:800; margin-bottom:.4rem; }
+    .why-body p  { font-size:.83rem; color:var(--w60); line-height:1.75; }
+
+    /* ─── TECH STRIP ─────────────────────────── */
+    #tech {
+      padding:50px 0;
+      background:var(--bg);
+      border-top:1px solid var(--w06);
+      border-bottom:1px solid var(--w06);
     }
-
-    .why-text h4 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 0.35rem;
+    .tech-label { text-align:center; font-size:.78rem; color:var(--w40); letter-spacing:.1em; text-transform:uppercase; margin-bottom:1.8rem; }
+    .tech-strip {
+      display:flex; flex-wrap:wrap;
+      justify-content:center; align-items:center;
+      gap:1rem 1.5rem;
     }
-
-    .why-text p {
-      font-size: 0.85rem;
-      color: var(--white-50);
-      line-height: 1.7;
+    .tech-badge {
+      display:flex; align-items:center; gap:.5rem;
+      background:var(--bg3); border:1px solid var(--w06);
+      border-radius:8px; padding:.5rem 1rem;
+      font-size:.82rem; font-weight:600; color:var(--w60);
+      transition:border-color var(--t), color var(--t);
     }
+    .tech-badge:hover { border-color:var(--gold-25); color:var(--gold); }
+    .tech-badge i { font-size:1rem; }
 
-    /* ==============================
-       CONTACT
-    ============================== */
+    /* ─── CONTACT ────────────────────────────── */
     #contact {
-      padding: 100px 0;
-      background: var(--bg-secondary);
-      position: relative;
+      padding:100px 0;
+      background:var(--bg2);
     }
-
     #contact::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      content:'';
+      position:absolute; top:0; inset-inline:0; height:1px;
+      background:linear-gradient(90deg, transparent, var(--gold), transparent);
     }
 
-    .contact-wrapper {
-      max-width: 680px;
-      margin: 0 auto;
-      background: var(--bg-card);
-      border: 1px solid rgba(212,175,55,0.12);
-      border-radius: 16px;
-      padding: 3rem 2.5rem;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    .contact-grid {
+      display:grid;
+      grid-template-columns:1fr 1.4fr;
+      gap:3rem; align-items:start;
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
+    .contact-info h3 { font-size:1.5rem; font-weight:900; margin-bottom:.8rem; }
+    .contact-info p  { font-size:.9rem; color:var(--w60); line-height:1.8; margin-bottom:2rem; }
+
+    .c-item {
+      display:flex; align-items:center; gap:.9rem;
+      padding:.9rem 1.1rem; border-radius:10px;
+      background:var(--bg3); border:1px solid var(--w06);
+      margin-bottom:.8rem;
+      transition:border-color var(--t);
+    }
+    .c-item:hover { border-color:var(--gold-25); }
+    .c-icon {
+      width:40px; height:40px; border-radius:9px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--gold-10); color:var(--gold); font-size:1rem; flex-shrink:0;
+    }
+    .c-detail span { display:block; font-size:.75rem; color:var(--w40); margin-bottom:.1rem; }
+    .c-detail a, .c-detail strong { font-size:.9rem; font-weight:700; color:var(--w); }
+    .c-detail a:hover { color:var(--gold); }
+
+    /* Form */
+    .contact-form {
+      background:var(--bg3);
+      border:1px solid rgba(212,175,55,.1);
+      border-radius:18px; padding:2.5rem 2rem;
+      box-shadow:0 20px 60px rgba(0,0,0,.4);
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      margin-bottom: 1.2rem;
-    }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
 
-    .form-group.full { grid-column: 1 / -1; }
-
-    .form-group label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--white-80);
+    .field {
+      display:flex; flex-direction:column; gap:.4rem;
+      margin-bottom:1.1rem;
     }
+    .field label { font-size:.82rem; font-weight:700; color:var(--w80); }
 
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(212,175,55,0.15);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      color: var(--white);
-      font-family: var(--font);
-      font-size: 0.9rem;
-      outline: none;
-      transition: var(--transition);
-      width: 100%;
-      direction: rtl;
+    .field input, .field select, .field textarea {
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(212,175,55,.12);
+      border-radius:9px;
+      padding:.75rem 1rem;
+      color:var(--w); font-family:var(--font); font-size:.88rem;
+      outline:none; transition:border-color var(--t), box-shadow var(--t);
+      direction:rtl; width:100%;
     }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: var(--white-50);
+    .field input::placeholder, .field textarea::placeholder { color:var(--w40); }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color:var(--gold);
+      box-shadow:0 0 0 3px rgba(212,175,55,.09);
     }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      border-color: var(--gold);
-      background: rgba(212,175,55,0.04);
-      box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
-    }
-
-    .form-group select {
-      cursor: pointer;
-    }
-
-    .form-group select option {
-      background: var(--bg-card);
-      color: var(--white);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
+    .field select { cursor:pointer; }
+    .field select option { background:var(--bg3); }
+    .field textarea { resize:vertical; min-height:120px; }
 
     .btn-submit {
-      width: 100%;
-      padding: 0.9rem;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      color: var(--bg-primary);
-      font-family: var(--font);
-      font-size: 1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      box-shadow: var(--glow-sm);
+      width:100%; padding:1rem; border-radius:10px; border:none;
+      background:linear-gradient(135deg, var(--gold-l), var(--gold), var(--gold-d));
+      color:#0a0a0a; font-family:var(--font); font-size:.95rem; font-weight:900;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      gap:.5rem; box-shadow:var(--glow-sm);
+      transition:transform var(--t), box-shadow var(--t);
     }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:var(--glow); }
+    .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
 
-    .btn-submit:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--glow);
+    .form-msg {
+      display:none; text-align:center;
+      padding:1.5rem; border-radius:10px;
+      margin-top:1rem;
     }
-
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 1.5rem;
-      color: var(--gold);
-      font-weight: 700;
-      font-size: 1.05rem;
+    .form-msg.success {
+      display:flex; flex-direction:column; align-items:center; gap:.5rem;
+      background:rgba(40,200,80,.08); border:1px solid rgba(40,200,80,.2);
+      color:#4cde7a; font-weight:700;
     }
+    .form-msg i { font-size:2rem; }
 
-    /* ==============================
-       FOOTER
-    ============================== */
+    /* ─── FOOTER ─────────────────────────────── */
     footer {
-      padding: 3rem 0 1.5rem;
-      background: #080808;
-      border-top: 1px solid rgba(212,175,55,0.1);
+      background:#080808;
+      border-top:1px solid rgba(212,175,55,.09);
+      padding:3.5rem 0 1.5rem;
     }
 
-    .footer-inner {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 2rem;
-      align-items: center;
-      margin-bottom: 2rem;
+    .footer-top {
+      display:grid;
+      grid-template-columns:1.4fr 1fr 1fr;
+      gap:3rem; margin-bottom:3rem;
     }
 
-    .footer-brand p {
-      font-size: 0.85rem;
-      color: var(--white-50);
-      margin-top: 0.6rem;
-      max-width: 320px;
+    .footer-brand .logo-link { margin-bottom:1rem; }
+    .footer-brand p { font-size:.85rem; color:var(--w60); line-height:1.8; max-width:300px; margin-bottom:1.3rem; }
+
+    .footer-social { display:flex; gap:.6rem; }
+    .soc-btn {
+      width:38px; height:38px; border-radius:9px;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--bg3); border:1px solid var(--w06);
+      color:var(--w60); font-size:.9rem;
+      transition:border-color var(--t), color var(--t), transform var(--t), box-shadow var(--t);
+    }
+    .soc-btn:hover {
+      border-color:var(--gold); color:var(--gold);
+      transform:translateY(-3px); box-shadow:var(--glow-sm);
     }
 
-    .footer-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 1rem;
+    .footer-col h5 {
+      font-size:.85rem; font-weight:800; letter-spacing:.08em;
+      text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem;
     }
+    .footer-col ul li { margin-bottom:.7rem; }
+    .footer-col ul li a {
+      font-size:.85rem; color:var(--w60);
+      transition:color var(--t), padding var(--t);
+      display:block;
+    }
+    .footer-col ul li a:hover { color:var(--gold); padding-right:.4rem; }
 
-    .footer-phone {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--gold);
-      font-weight: 700;
-      font-size: 1.05rem;
-      direction: ltr;
+    .f-phone {
+      display:flex; align-items:center; gap:.6rem;
+      color:var(--gold); font-weight:700; font-size:.95rem;
+      margin-bottom:.8rem; direction:ltr; width:fit-content;
     }
-
-    .social-links {
-      display: flex;
-      gap: 0.7rem;
-    }
-
-    .social-link {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(212,175,55,0.15);
-      color: var(--white-50);
-      font-size: 0.95rem;
-      transition: var(--transition);
-    }
-
-    .social-link:hover {
-      background: rgba(212,175,55,0.1);
-      border-color: var(--gold);
-      color: var(--gold);
-      transform: translateY(-3px);
-      box-shadow: var(--glow-sm);
-    }
+    .f-phone i { font-size:.85rem; }
 
     .footer-bottom {
-      border-top: 1px solid var(--white-20);
-      padding-top: 1.2rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--white-50);
+      border-top:1px solid var(--w06); padding-top:1.5rem;
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:.7rem;
     }
+    .footer-bottom p { font-size:.78rem; color:var(--w40); }
+    .footer-bottom p span { color:var(--gold); }
+    .footer-bottom-links { display:flex; gap:1.2rem; }
+    .footer-bottom-links a { font-size:.78rem; color:var(--w40); transition:color var(--t); }
+    .footer-bottom-links a:hover { color:var(--gold); }
 
-    .footer-bottom span { color: var(--gold); }
-
-    /* ==============================
-       WHATSAPP FLOAT BUTTON
-    ============================== */
-    .wa-float {
-      position: fixed;
-      bottom: 28px;
-      left: 28px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
+    /* ─── WA FLOAT ───────────────────────────── */
+    .wa-wrap {
+      position:fixed; bottom:28px; left:28px;
+      z-index:9000;
+      display:flex; align-items:center; gap:.75rem;
     }
+    .wa-tip {
+      background:rgba(10,10,10,.95); border:1px solid rgba(37,211,102,.25);
+      color:#25D366; font-size:.78rem; font-weight:700;
+      padding:.38rem .85rem; border-radius:8px;
+      white-space:nowrap; pointer-events:none;
+      opacity:0; transform:translateX(-8px);
+      transition:opacity .3s, transform .3s;
+      font-family:var(--font);
+    }
+    .wa-wrap:hover .wa-tip { opacity:1; transform:translateX(0); }
 
     .wa-btn {
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      background: #25D366;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: waPulse 2.5s ease-in-out infinite;
-      flex-shrink: 0;
+      width:60px; height:60px; border-radius:50%;
+      background:#25D366; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(37,211,102,.4);
+      animation:waPulse 2.8s ease-in-out infinite;
+      flex-shrink:0;
+      transition:transform .3s, box-shadow .3s;
     }
-
-    .wa-btn svg {
-      width: 30px;
-      height: 30px;
-      fill: #ffffff;
-    }
-
+    .wa-btn:hover { transform:scale(1.1); animation-play-state:paused; box-shadow:0 6px 30px rgba(37,211,102,.65); }
+    .wa-btn svg { width:28px; height:28px; fill:#fff; }
     @keyframes waPulse {
-      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.4); }
-      50% { box-shadow: 0 4px 25px rgba(37,211,102,0.6), 0 0 0 12px rgba(37,211,102,0); }
+      0%,100% { box-shadow:0 4px 20px rgba(37,211,102,.4), 0 0 0 0 rgba(37,211,102,.35); }
+      55%      { box-shadow:0 4px 25px rgba(37,211,102,.5), 0 0 0 14px rgba(37,211,102,0); }
     }
 
-    .wa-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 30px rgba(37,211,102,0.7);
-      animation-play-state: paused;
+    /* ─── BACK TO TOP ────────────────────────── */
+    #back-top {
+      position:fixed; bottom:28px; right:28px; z-index:9000;
+      width:44px; height:44px; border-radius:10px;
+      background:var(--bg3); border:1px solid var(--gold-25);
+      color:var(--gold); font-size:1rem;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none;
+      transition:opacity var(--t), transform var(--t), box-shadow var(--t);
+      cursor:pointer;
     }
+    #back-top.show { opacity:1; pointer-events:auto; }
+    #back-top:hover { box-shadow:var(--glow-sm); transform:translateY(-3px); }
 
-    .wa-tooltip {
-      background: rgba(10,10,10,0.95);
-      border: 1px solid rgba(37,211,102,0.3);
-      color: #25D366;
-      font-size: 0.82rem;
-      font-weight: 700;
-      padding: 0.4rem 0.85rem;
-      border-radius: 8px;
-      white-space: nowrap;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(-10px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      font-family: var(--font);
+    /* ─── RESPONSIVE ─────────────────────────── */
+    @media (max-width:1000px) {
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-card  { display:none; }
+      .contact-grid { grid-template-columns:1fr; }
+      .footer-top   { grid-template-columns:1fr 1fr; }
     }
-
-    .wa-float:hover .wa-tooltip {
-      opacity: 1;
-      transform: translateX(0);
+    @media (max-width:900px) {
+      .desktop-nav, .nav-cta { display:none; }
+      .burger { display:flex; }
     }
-
-    /* ==============================
-       LOGO SVG INLINE STYLES
-    ============================== */
-    .v-logo-circle {
-      fill: none;
-      stroke: var(--gold);
-      stroke-width: 1.5;
-    }
-    .v-solid { fill: url(#goldGradient); }
-    .v-pixel { fill: var(--gold-light); }
-
-    /* ==============================
-       RESPONSIVE
-    ============================== */
-    @media (max-width: 900px) {
-      nav ul { display: none; }
-      .hamburger { display: flex; }
-      .btn-nav-desktop { display: none; }
-
-      .footer-inner {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-      .footer-right { align-items: center; }
-      .footer-brand p { max-width: 100%; }
-
-      .form-row { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 600px) {
-      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
-      .contact-wrapper { padding: 2rem 1.2rem; }
-      .hero-btns { flex-direction: column; }
-      .btn-primary, .btn-secondary { justify-content: center; }
-      .wa-float { bottom: 18px; left: 18px; }
+    @media (max-width:640px) {
+      .process-steps::before { display:none; }
+      .field-row { grid-template-columns:1fr; }
+      .footer-top { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction:column; text-align:center; }
+      .footer-bottom-links { justify-content:center; }
+      .hero-stats { flex-direction:column; gap:1rem; }
+      .stat { border:none; padding:0; margin:0; }
+      .wa-wrap { bottom:18px; left:18px; }
+      #back-top { bottom:18px; right:18px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ==============================
-       HEADER
-  ============================== -->
-  <header id="main-header">
-    <div class="container">
-      <div class="nav-inner">
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
 
-        <!-- Logo -->
-        <a href="#home" class="logo" aria-label="VEXORA">
-          <div class="logo-icon">
-            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#f0cc60"/>
-                  <stop offset="100%" stop-color="#b8942e"/>
-                </linearGradient>
-              </defs>
-              <!-- Circle -->
-              <circle cx="22" cy="22" r="20" class="v-logo-circle"/>
-              <!-- Solid V left stroke -->
-              <polygon points="7,10 13,10 22,30 17,30" class="v-solid"/>
-              <!-- Solid V right stroke -->
-              <polygon points="37,10 31,10 22,30 27,30" class="v-solid"/>
-              <!-- Pixel blocks top-right -->
-              <rect x="30" y="7"  width="4" height="4" rx="0.5" class="v-pixel" opacity="1"/>
-              <rect x="35" y="7"  width="4" height="4" rx="0.5" class="v-pixel" opacity="0.7"/>
-              <rect x="30" y="12" width="4" height="4" rx="0.5" class="v-pixel" opacity="0.5"/>
-              <rect x="35" y="12" width="4" height="4" rx="0.5" class="v-pixel" opacity="0.3"/>
-            </svg>
-          </div>
-          <div class="logo-text">
-            <span class="logo-name">VE<span>X</span>ORA</span>
-            <span class="logo-tagline">Building Digital Experiences</span>
-          </div>
-        </a>
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header id="header">
+  <div class="container">
+    <div class="nav-wrap">
+      <a href="#hero" class="logo-link" aria-label="VEXORA">
+        <svg class="logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#f0cc60"/>
+              <stop offset="100%" stop-color="#a8871f"/>
+            </linearGradient>
+          </defs>
+          <circle cx="24" cy="24" r="22" fill="none" stroke="#d4af37" stroke-width="1.2"/>
+          <polygon points="7,11 14,11 24,33 19,33" fill="url(#g1)"/>
+          <polygon points="41,11 34,11 24,33 29,33" fill="url(#g1)"/>
+          <rect x="33" y="7"  width="4" height="4" rx="0.8" fill="#f0cc60"/>
+          <rect x="38" y="7"  width="4" height="4" rx="0.8" fill="#f0cc60" opacity=".7"/>
+          <rect x="33" y="12" width="4" height="4" rx="0.8" fill="#f0cc60" opacity=".5"/>
+          <rect x="38" y="12" width="4" height="4" rx="0.8" fill="#f0cc60" opacity=".3"/>
+        </svg>
+        <div class="logo-copy">
+          <span class="logo-name">VE<b>X</b>ORA</span>
+          <span class="logo-tag">Building Digital Experiences</span>
+        </div>
+      </a>
 
-        <!-- Desktop Nav -->
-        <nav>
-          <ul>
-            <li><a href="#home">الرئيسية</a></li>
-            <li><a href="#services">خدماتنا</a></li>
-            <li><a href="#why">لماذا نحن</a></li>
-            <li><a href="#contact">تواصل معنا</a></li>
-          </ul>
-        </nav>
-
-        <a href="#contact" class="btn-nav btn-nav-desktop">ابدأ مشروعك</a>
-
-        <!-- Hamburger -->
-        <button class="hamburger" id="hamburger" aria-label="القائمة">
-          <span></span><span></span><span></span>
-        </button>
-
-      </div>
-
-      <!-- Mobile Nav -->
-      <nav class="mobile-nav" id="mobile-nav">
-        <a href="#home" onclick="closeMobileNav()">الرئيسية</a>
-        <a href="#services" onclick="closeMobileNav()">خدماتنا</a>
-        <a href="#why" onclick="closeMobileNav()">لماذا نحن</a>
-        <a href="#contact" onclick="closeMobileNav()">تواصل معنا</a>
-        <a href="#contact" class="btn-nav" onclick="closeMobileNav()">ابدأ مشروعك</a>
+      <nav class="desktop-nav">
+        <a href="#hero">الرئيسية</a>
+        <a href="#services">خدماتنا</a>
+        <a href="#process">طريقة عملنا</a>
+        <a href="#why">لماذا نحن</a>
+        <a href="#contact">تواصل معنا</a>
       </nav>
+
+      <a href="#contact" class="btn btn-gold nav-cta">ابدأ مشروعك</a>
+
+      <button class="burger" id="burger" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </header>
 
-  <!-- ==============================
-       HERO
-  ============================== -->
-  <section id="home">
-    <div class="hero-bg"></div>
-    <div class="hero-dots"></div>
-    <div class="hero-orb hero-orb-1"></div>
-    <div class="hero-orb hero-orb-2"></div>
+    <nav class="mob-nav" id="mob-nav">
+      <a href="#hero"     onclick="closeNav()">الرئيسية</a>
+      <a href="#services" onclick="closeNav()">خدماتنا</a>
+      <a href="#process"  onclick="closeNav()">طريقة عملنا</a>
+      <a href="#why"      onclick="closeNav()">لماذا نحن</a>
+      <a href="#contact"  onclick="closeNav()">تواصل معنا</a>
+      <a href="#contact" class="btn btn-gold" onclick="closeNav()">ابدأ مشروعك</a>
+    </nav>
+  </div>
+</header>
 
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge fade-in">
-          <i class="fa-solid fa-circle-bolt"></i>
-          شريكك الرقمي الموثوق
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+
+        <div class="hero-badge reveal">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          حلول رقمية متكاملة للأعمال
         </div>
 
-        <h1 class="hero-title fade-in fade-in-delay-1">
-          نحوّل <span class="gold-word">أفكارك</span> إلى تطبيقات<br/>ومواقع احترافية
+        <h1 class="hero-title reveal d1">
+          نحوّل <span class="accent">أفكارك</span> إلى<br/>
+          <span class="typed-wrap"><span id="typed-text"></span><span class="cursor"></span></span>
         </h1>
 
-        <p class="hero-desc fade-in fade-in-delay-2">
-          شريكك التقني لبناء تطبيقات Android وiOS، مواقع ومتاجر إلكترونية، وأنظمة إدارة مخصصة تُناسب طموحك وتُحقق أهدافك.
+        <p class="hero-desc reveal d2">
+          شريكك التقني الموثوق في تطوير تطبيقات <strong>Android وiOS</strong>، بناء مواقع ومتاجر إلكترونية عالية الأداء، وتصميم أنظمة إدارة مخصصة — من الفكرة حتى الإطلاق.
         </p>
 
-        <div class="hero-btns fade-in fade-in-delay-3">
-          <a href="#contact" class="btn-primary">
+        <div class="hero-btns reveal d3">
+          <a href="https://wa.me/9647778878421" class="btn btn-gold" target="_blank">
             <i class="fa-brands fa-whatsapp"></i>
             تواصل معنا الآن
           </a>
-          <a href="#services" class="btn-secondary">
-            <i class="fa-solid fa-grid-2"></i>
-            تصفح خدماتنا
+          <a href="#services" class="btn btn-ghost">
+            <i class="fa-solid fa-grid"></i>
+            استعرض خدماتنا
           </a>
         </div>
 
-        <div class="hero-stats fade-in fade-in-delay-4">
-          <div class="stat-item">
-            <span class="stat-num">+50</span>
-            <span class="stat-label">مشروع منجز</span>
+        <div class="hero-stats reveal d4">
+          <div class="stat">
+            <div class="stat-n"><span class="count-up" data-target="50">0</span>+</div>
+            <div class="stat-l">مشروع منجز</div>
           </div>
-          <div class="stat-item">
-            <span class="stat-num">+30</span>
-            <span class="stat-label">عميل راضٍ</span>
+          <div class="stat">
+            <div class="stat-n"><span class="count-up" data-target="30">0</span>+</div>
+            <div class="stat-l">عميل راضٍ</div>
           </div>
-          <div class="stat-item">
-            <span class="stat-num">3+</span>
-            <span class="stat-label">سنوات خبرة</span>
+          <div class="stat">
+            <div class="stat-n"><span class="count-up" data-target="3">0</span>+</div>
+            <div class="stat-l">سنوات خبرة</div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==============================
-       SERVICES
-  ============================== -->
-  <section id="services">
-    <div class="container">
-      <h2 class="section-title fade-in">خدماتنا <span>المميزة</span></h2>
-      <div class="gold-line fade-in"></div>
-      <p class="section-subtitle fade-in">نقدم حلولاً تقنية متكاملة تُلبّي احتياجات عملك بأعلى معايير الجودة</p>
-
-      <div class="services-grid">
-
-        <div class="service-card fade-in fade-in-delay-1">
-          <div class="service-icon">
-            <i class="fa-solid fa-mobile-screen"></i>
-          </div>
-          <h3>تطوير تطبيقات الجوال</h3>
-          <p>تطبيقات Android وiOS احترافية وسلسة، مُصمَّمة لتجربة مستخدم استثنائية وأداء عالٍ.</p>
-        </div>
-
-        <div class="service-card fade-in fade-in-delay-2">
-          <div class="service-icon">
-            <i class="fa-solid fa-globe"></i>
-          </div>
-          <h3>مواقع ومتاجر إلكترونية</h3>
-          <p>مواقع ومتاجر رقمية سريعة ومتجاوبة، مُحسَّنة لمحركات البحث وتحويل الزوار إلى عملاء.</p>
-        </div>
-
-        <div class="service-card fade-in fade-in-delay-3">
-          <div class="service-icon">
-            <i class="fa-solid fa-gears"></i>
-          </div>
-          <h3>أنظمة إدارة مخصصة</h3>
-          <p>لوحات تحكم وأنظمة ERP وCRM مُفصَّلة خصيصاً لعملياتك التجارية وتدفق عملك.</p>
-        </div>
-
-        <div class="service-card fade-in fade-in-delay-4">
-          <div class="service-icon">
-            <i class="fa-solid fa-pen-ruler"></i>
-          </div>
-          <h3>تصميم UI/UX عصري</h3>
-          <p>تصاميم جذابة وواجهات سهلة الاستخدام، تعكس هوية علامتك التجارية وتجذب جمهورك.</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ==============================
-       WHY US
-  ============================== -->
-  <section id="why">
-    <div class="container">
-      <h2 class="section-title fade-in">لماذا تختار <span>VEXORA</span>؟</h2>
-      <div class="gold-line fade-in"></div>
-      <p class="section-subtitle fade-in">نلتزم بتقديم تجربة تتجاوز توقعاتك في كل مرحلة من مراحل مشروعك</p>
-
-      <div class="why-grid">
-
-        <div class="why-item fade-in fade-in-delay-1">
-          <div class="why-icon-wrap">
-            <i class="fa-solid fa-medal"></i>
-          </div>
-          <div class="why-text">
-            <h4>جودة لا تُنازَع</h4>
-            <p>نضع أعلى المعايير في كل سطر كود وكل تفصيل تصميمي، لأن منتجك يستحق الأفضل.</p>
-          </div>
-        </div>
-
-        <div class="why-item fade-in fade-in-delay-2">
-          <div class="why-icon-wrap">
-            <i class="fa-solid fa-bolt"></i>
-          </div>
-          <div class="why-text">
-            <h4>سرعة في التسليم</h4>
-            <p>نلتزم بالمواعيد المتفق عليها مع ضمان التسليم في الوقت المحدد دون التنازل عن الجودة.</p>
-          </div>
-        </div>
-
-        <div class="why-item fade-in fade-in-delay-3">
-          <div class="why-icon-wrap">
-            <i class="fa-solid fa-headset"></i>
-          </div>
-          <div class="why-text">
-            <h4>دعم فني مستمر</h4>
-            <p>نحن معك بعد الإطلاق، دعم تقني على مدار الساعة لضمان استمرارية عملك دون انقطاع.</p>
-          </div>
-        </div>
-
-        <div class="why-item fade-in fade-in-delay-4">
-          <div class="why-icon-wrap">
-            <i class="fa-solid fa-tag"></i>
-          </div>
-          <div class="why-text">
-            <h4>أسعار تنافسية</h4>
-            <p>جودة عالية بأسعار منافسة تناسب كل الميزانيات، مع شفافية كاملة ولا تكاليف مخفية.</p>
+          <div class="stat">
+            <div class="stat-n"><span class="count-up" data-target="98">0</span>%</div>
+            <div class="stat-l">رضا العملاء</div>
           </div>
         </div>
 
       </div>
+
+      <!-- Floating code card -->
+      <div class="hero-card reveal right d2">
+        <div class="hero-card-head">
+          <span class="hc-dot hc-dot-r"></span>
+          <span class="hc-dot hc-dot-y"></span>
+          <span class="hc-dot hc-dot-g"></span>
+          <span style="font-size:.7rem;color:var(--w40);font-family:var(--mono);margin-right:auto">vexora.dev</span>
+        </div>
+        <div class="code-line"><span class="cm">// VEXORA — Project Init</span></div>
+        <div class="code-line"><span class="kw">const</span> <span class="fn">project</span> = {</div>
+        <div class="code-line">&nbsp;&nbsp;type: <span class="str">"mobile_app"</span>,</div>
+        <div class="code-line">&nbsp;&nbsp;platform: <span class="str">"Android | iOS"</span>,</div>
+        <div class="code-line">&nbsp;&nbsp;delivery: <span class="num">14</span> + <span class="str">" days"</span>,</div>
+        <div class="code-line">&nbsp;&nbsp;quality: <span class="num">100</span> + <span class="str">"%"</span>,</div>
+        <div class="code-line">};</div>
+        <div class="code-line">&nbsp;</div>
+        <div class="code-line"><span class="fn">launchProject</span>(project);</div>
+        <div class="hc-bar"></div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ==============================
-       CONTACT
-  ============================== -->
-  <section id="contact">
-    <div class="container">
-      <h2 class="section-title fade-in">تواصل <span>معنا</span></h2>
-      <div class="gold-line fade-in"></div>
-      <p class="section-subtitle fade-in">أخبرنا عن مشروعك وسنتواصل معك في أقرب وقت لنضع خطة عملك معاً</p>
+<!-- ═══════════════════ SERVICES ═══════════════════ -->
+<section id="services">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="sec-label reveal"><i class="fa-solid fa-sparkles"></i> ما نقدمه</div>
+      <h2 class="sec-title reveal d1">خدماتنا <span class="gold">المميزة</span></h2>
+      <div class="sec-divider reveal d1"></div>
+      <p class="sec-sub reveal d2">نقدم حلولاً تقنية متكاملة مُصمَّمة لتُحوّل عملك الرقمي وتُعظّم نتائجك</p>
+    </div>
 
-      <div class="contact-wrapper fade-in">
-        <form id="contact-form" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">الاسم الكامل</label>
-              <input type="text" id="name" name="name" placeholder="أدخل اسمك الكامل" required />
+    <div class="services-grid">
+
+      <div class="srv-card reveal d1">
+        <span class="srv-number">01</span>
+        <div class="srv-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+        <h3>تطوير تطبيقات الجوال</h3>
+        <p>نبني تطبيقات Android وiOS سلسة وسريعة بتجربة مستخدم استثنائية، من التصميم حتى النشر على المتاجر.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Flutter</span>
+          <span class="srv-tag">React Native</span>
+          <span class="srv-tag">Android</span>
+          <span class="srv-tag">iOS</span>
+        </div>
+      </div>
+
+      <div class="srv-card reveal d2">
+        <span class="srv-number">02</span>
+        <div class="srv-icon"><i class="fa-solid fa-globe"></i></div>
+        <h3>مواقع ومتاجر إلكترونية</h3>
+        <p>مواقع رقمية سريعة التحميل ومتجاوبة مع جميع الأجهزة، مُحسَّنة لمحركات البحث وتحويل الزوار إلى عملاء.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">React</span>
+          <span class="srv-tag">Next.js</span>
+          <span class="srv-tag">WooCommerce</span>
+          <span class="srv-tag">SEO</span>
+        </div>
+      </div>
+
+      <div class="srv-card reveal d3">
+        <span class="srv-number">03</span>
+        <div class="srv-icon"><i class="fa-solid fa-gears"></i></div>
+        <h3>أنظمة إدارة مخصصة</h3>
+        <p>لوحات تحكم وأنظمة ERP وCRM مُفصَّلة بالكامل لعملياتك التجارية، مع تكامل كامل مع أنظمتك الحالية.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Node.js</span>
+          <span class="srv-tag">Laravel</span>
+          <span class="srv-tag">ERP</span>
+          <span class="srv-tag">CRM</span>
+        </div>
+      </div>
+
+      <div class="srv-card reveal d4">
+        <span class="srv-number">04</span>
+        <div class="srv-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+        <h3>تصميم UI/UX عصري</h3>
+        <p>واجهات مستخدم جذابة وسهلة الاستخدام تعكس هوية علامتك التجارية وتُعزز ولاء عملائك.</p>
+        <div class="srv-tags">
+          <span class="srv-tag">Figma</span>
+          <span class="srv-tag">Prototyping</span>
+          <span class="srv-tag">Branding</span>
+          <span class="srv-tag">Design System</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROCESS ═══════════════════ -->
+<section id="process">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="sec-label reveal"><i class="fa-solid fa-arrow-progress"></i> كيف نعمل</div>
+      <h2 class="sec-title reveal d1">طريقة <span class="gold">عملنا</span></h2>
+      <div class="sec-divider reveal d1"></div>
+      <p class="sec-sub reveal d2">نتبع منهجية واضحة ومثبتة لضمان تسليم مشروعك في الوقت المحدد وبأعلى جودة</p>
+    </div>
+
+    <div class="process-steps">
+      <div class="step reveal d1">
+        <div class="step-num">01</div>
+        <h4>الاستشارة والتحليل</h4>
+        <p>نجلس معك لفهم فكرتك، أهدافك، وجمهورك المستهدف بدقة تامة.</p>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num">02</div>
+        <h4>التصميم والنمذجة</h4>
+        <p>نصمم نماذج تفاعلية كاملة تُجسّد تجربة المستخدم قبل البدء بالتطوير.</p>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num">03</div>
+        <h4>التطوير والبناء</h4>
+        <p>نبني مشروعك بكود نظيف وقابل للتوسع مع تحديثات دورية شفافة.</p>
+      </div>
+      <div class="step reveal d4">
+        <div class="step-num">04</div>
+        <h4>الاختبار والإطلاق</h4>
+        <p>اختبار شامل على جميع الأجهزة ثم إطلاق احترافي مع دعم كامل بعد التسليم.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ WHY ═══════════════════ -->
+<section id="why">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="sec-label reveal"><i class="fa-solid fa-shield-check"></i> مزايانا</div>
+      <h2 class="sec-title reveal d1">لماذا تختار <span class="gold">VEXORA</span>؟</h2>
+      <div class="sec-divider reveal d1"></div>
+      <p class="sec-sub reveal d2">نلتزم بما يتجاوز توقعاتك في كل خطوة من خطوات مشروعك</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card reveal d1">
+        <div class="why-ico"><i class="fa-solid fa-medal"></i></div>
+        <div class="why-body">
+          <h4>جودة لا تُنازَع</h4>
+          <p>أعلى معايير الكود والتصميم في كل مشروع، مع مراجعة دقيقة لكل تفصيل قبل التسليم.</p>
+        </div>
+      </div>
+      <div class="why-card reveal d2">
+        <div class="why-ico"><i class="fa-solid fa-rocket"></i></div>
+        <div class="why-body">
+          <h4>تسليم في الموعد</h4>
+          <p>نلتزم بالجدول الزمني المتفق عليه مع تحديثات أسبوعية شفافة طوال فترة التطوير.</p>
+        </div>
+      </div>
+      <div class="why-card reveal d3">
+        <div class="why-ico"><i class="fa-solid fa-headset"></i></div>
+        <div class="why-body">
+          <h4>دعم فني على مدار الساعة</h4>
+          <p>نحن معك بعد الإطلاق — دعم تقني فوري لضمان استمرارية عملك دون انقطاع.</p>
+        </div>
+      </div>
+      <div class="why-card reveal d4">
+        <div class="why-ico"><i class="fa-solid fa-tag"></i></div>
+        <div class="why-body">
+          <h4>أسعار تنافسية وشفافة</h4>
+          <p>جودة عالية بأسعار عادلة ومناسبة لجميع الميزانيات، بدون أي تكاليف مخفية.</p>
+        </div>
+      </div>
+      <div class="why-card reveal d2">
+        <div class="why-ico"><i class="fa-solid fa-lock"></i></div>
+        <div class="why-body">
+          <h4>خصوصية وأمان</h4>
+          <p>كامل حقوق الملكية الفكرية تنتقل إليك، مع ضمان حماية بياناتك ومعلوماتك التجارية.</p>
+        </div>
+      </div>
+      <div class="why-card reveal d3">
+        <div class="why-ico"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="why-body">
+          <h4>حلول قابلة للتوسع</h4>
+          <p>نبني بنية تقنية مرنة تنمو مع أعمالك، من الـ MVP الأول حتى المنصة الكاملة.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TECH STRIP ═══════════════════ -->
+<section id="tech">
+  <div class="container">
+    <p class="tech-label">التقنيات التي نتقنها</p>
+    <div class="tech-strip">
+      <div class="tech-badge"><i class="fa-brands fa-react"></i> React / Next.js</div>
+      <div class="tech-badge"><i class="fa-brands fa-flutter" style="color:#54c5f8"></i> Flutter</div>
+      <div class="tech-badge"><i class="fa-brands fa-node-js"></i> Node.js</div>
+      <div class="tech-badge"><i class="fa-brands fa-laravel"></i> Laravel</div>
+      <div class="tech-badge"><i class="fa-brands fa-android"></i> Android Native</div>
+      <div class="tech-badge"><i class="fa-brands fa-apple"></i> iOS / Swift</div>
+      <div class="tech-badge"><i class="fa-solid fa-database"></i> MySQL / MongoDB</div>
+      <div class="tech-badge"><i class="fa-brands fa-figma"></i> Figma</div>
+      <div class="tech-badge"><i class="fa-brands fa-wordpress"></i> WordPress</div>
+      <div class="tech-badge"><i class="fa-solid fa-fire"></i> Firebase</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CONTACT ═══════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="sec-label reveal"><i class="fa-solid fa-envelope-open-text"></i> ابدأ معنا</div>
+      <h2 class="sec-title reveal d1">تواصل <span class="gold">معنا</span></h2>
+      <div class="sec-divider reveal d1"></div>
+      <p class="sec-sub reveal d2">أخبرنا عن مشروعك وسنتواصل معك خلال 24 ساعة لنبدأ رحلة النجاح معاً</p>
+    </div>
+
+    <div class="contact-grid">
+
+      <!-- Info side -->
+      <div class="reveal">
+        <h3>هل لديك مشروع في ذهنك؟</h3>
+        <p>لا تتردد في التواصل معنا — سواء كانت فكرة ناشئة أو مشروع جاهز للتنفيذ، فريقنا مستعد لمساعدتك في كل خطوة.</p>
+
+        <div class="c-item">
+          <div class="c-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="c-detail">
+            <span>واتساب / هاتف</span>
+            <a href="https://wa.me/9647778878421" target="_blank">0778 878 421</a>
+          </div>
+        </div>
+
+        <div class="c-item">
+          <div class="c-icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="c-detail">
+            <span>ساعات الرد</span>
+            <strong>السبت – الخميس، 9ص – 9م</strong>
+          </div>
+        </div>
+
+        <div class="c-item">
+          <div class="c-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="c-detail">
+            <span>وقت الرد</span>
+            <strong>خلال 24 ساعة كحد أقصى</strong>
+          </div>
+        </div>
+
+        <div style="margin-top:1.8rem">
+          <a href="https://wa.me/9647778878421" class="btn btn-gold" target="_blank" style="width:100%;justify-content:center">
+            <i class="fa-brands fa-whatsapp"></i>
+            راسلنا على واتساب مباشرةً
+          </a>
+        </div>
+      </div>
+
+      <!-- Form side -->
+      <div class="contact-form reveal d2">
+        <form id="cform" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-name">الاسم الكامل *</label>
+              <input type="text" id="f-name" placeholder="اسمك الكامل" required/>
             </div>
-            <div class="form-group">
-              <label for="phone">رقم الهاتف</label>
-              <input type="tel" id="phone" name="phone" placeholder="+964 7XX XXX XXXX" required dir="ltr" />
+            <div class="field">
+              <label for="f-phone">رقم الهاتف *</label>
+              <input type="tel" id="f-phone" placeholder="+212 6XX XXX XXX" required dir="ltr"/>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="project-type">نوع المشروع</label>
-            <select id="project-type" name="project-type" required>
+          <div class="field">
+            <label for="f-type">نوع المشروع *</label>
+            <select id="f-type" required>
               <option value="" disabled selected>اختر نوع مشروعك</option>
-              <option value="app">تطبيق Android / iOS</option>
+              <option value="app-android">تطبيق Android</option>
+              <option value="app-ios">تطبيق iOS</option>
+              <option value="app-both">تطبيق Android + iOS</option>
               <option value="website">موقع إلكتروني</option>
               <option value="store">متجر إلكتروني</option>
-              <option value="system">نظام إدارة مخصص</option>
-              <option value="design">تصميم UI/UX</option>
+              <option value="system">نظام إدارة / لوحة تحكم</option>
+              <option value="design">تصميم UI/UX فقط</option>
               <option value="other">أخرى</option>
             </select>
           </div>
 
-          <div class="form-group">
-            <label for="message">وصف مختصر للمشروع</label>
-            <textarea id="message" name="message" placeholder="اشرح فكرتك ومتطلباتك باختصار..." rows="4"></textarea>
+          <div class="field">
+            <label for="f-budget">الميزانية التقريبية</label>
+            <select id="f-budget">
+              <option value="" disabled selected>اختر النطاق</option>
+              <option value="low">أقل من 500$</option>
+              <option value="mid">500$ – 2,000$</option>
+              <option value="high">2,000$ – 5,000$</option>
+              <option value="premium">أكثر من 5,000$</option>
+            </select>
           </div>
 
-          <button type="submit" class="btn-submit">
+          <div class="field">
+            <label for="f-msg">تفاصيل المشروع</label>
+            <textarea id="f-msg" rows="4" placeholder="صف فكرتك، متطلباتك، أو أي تفاصيل تراها مهمة..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submit-btn">
             <i class="fa-solid fa-paper-plane"></i>
             إرسال الطلب
           </button>
 
-          <div class="form-success" id="form-success">
-            <i class="fa-solid fa-circle-check" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>
+          <div class="form-msg" id="form-msg">
+            <i class="fa-solid fa-circle-check"></i>
             تم إرسال طلبك بنجاح! سنتواصل معك قريباً.
           </div>
         </form>
       </div>
+
     </div>
-  </section>
-
-  <!-- ==============================
-       FOOTER
-  ============================== -->
-  <footer>
-    <div class="container">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <a href="#home" class="logo">
-            <div class="logo-icon">
-              <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="goldGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f0cc60"/>
-                    <stop offset="100%" stop-color="#b8942e"/>
-                  </linearGradient>
-                </defs>
-                <circle cx="22" cy="22" r="20" fill="none" stroke="#d4af37" stroke-width="1.5"/>
-                <polygon points="7,10 13,10 22,30 17,30" fill="url(#goldGradient2)"/>
-                <polygon points="37,10 31,10 22,30 27,30" fill="url(#goldGradient2)"/>
-                <rect x="30" y="7"  width="4" height="4" rx="0.5" fill="#f0cc60"/>
-                <rect x="35" y="7"  width="4" height="4" rx="0.5" fill="#f0cc60" opacity="0.7"/>
-                <rect x="30" y="12" width="4" height="4" rx="0.5" fill="#f0cc60" opacity="0.5"/>
-              </svg>
-            </div>
-            <div class="logo-text">
-              <span class="logo-name">VE<span>X</span>ORA</span>
-              <span class="logo-tagline">Building Digital Experiences</span>
-            </div>
-          </a>
-          <p>نبني تجارب رقمية استثنائية تُحوّل رؤيتك إلى واقع ملموس. شريكك التقني الموثوق من الفكرة حتى الإطلاق.</p>
-        </div>
-
-        <div class="footer-right">
-          <a href="tel:+9647778878421" class="footer-phone">
-            <i class="fa-solid fa-phone"></i>
-            0778878421
-          </a>
-          <div class="social-links">
-            <a href="https://wa.me/9647778878421" class="social-link" aria-label="واتساب" target="_blank">
-              <i class="fa-brands fa-whatsapp"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="انستغرام" target="_blank">
-              <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="تيليغرام" target="_blank">
-              <i class="fa-brands fa-telegram"></i>
-            </a>
-            <a href="#" class="social-link" aria-label="فيسبوك" target="_blank">
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>© <span id="year"></span> <span>VEXORA</span>. جميع الحقوق محفوظة. صُنع بـ <span>♥</span> في العراق</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ==============================
-       WHATSAPP FLOAT
-  ============================== -->
-  <div class="wa-float">
-    <a href="https://wa.me/9647778878421" class="wa-btn" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-    </a>
-    <div class="wa-tooltip">تواصل معنا واتساب</div>
   </div>
+</section>
 
-  <!-- ==============================
-       JAVASCRIPT
-  ============================== -->
-  <script>
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#hero" class="logo-link">
+          <svg class="logo-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#f0cc60"/>
+                <stop offset="100%" stop-color="#a8871f"/>
+              </linearGradient>
+            </defs>
+            <circle cx="24" cy="24" r="22" fill="none" stroke="#d4af37" stroke-width="1.2"/>
+            <polygon points="7,11 14,11 24,33 19,33" fill="url(#g2)"/>
+            <polygon points="41,11 34,11 24,33 29,33" fill="url(#g2)"/>
+            <rect x="33" y="7"  width="4" height="4" rx="0.8" fill="#f0cc60"/>
+            <rect x="38" y="7"  width="4" height="4" rx="0.8" fill="#f0cc60" opacity=".7"/>
+            <rect x="33" y="12" width="4" height="4" rx="0.8" fill="#f0cc60" opacity=".5"/>
+          </svg>
+          <div class="logo-copy">
+            <span class="logo-name">VE<b>X</b>ORA</span>
+            <span class="logo-tag">Building Digital Experiences</span>
+          </div>
+        </a>
+        <p>نبني تجارب رقمية استثنائية تُحوّل رؤيتك إلى منتج احترافي يتفوق على المنافسين. شريكك التقني الموثوق من اليوم الأول.</p>
+        <div class="footer-social">
+          <a href="https://wa.me/9647778878421" class="soc-btn" aria-label="واتساب" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" class="soc-btn" aria-label="انستغرام" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="soc-btn" aria-label="تيليغرام" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="soc-btn" aria-label="فيسبوك" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="soc-btn" aria-label="تيك توك" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
 
-    // Header scroll effect
-    const header = document.getElementById('main-header');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 20);
-    }, { passive: true });
+      <div class="footer-col">
+        <h5>خدماتنا</h5>
+        <ul>
+          <li><a href="#services">تطوير تطبيقات الجوال</a></li>
+          <li><a href="#services">مواقع ومتاجر إلكترونية</a></li>
+          <li><a href="#services">أنظمة إدارة مخصصة</a></li>
+          <li><a href="#services">تصميم UI/UX</a></li>
+        </ul>
+      </div>
 
-    // Hamburger
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobile-nav');
+      <div class="footer-col">
+        <h5>تواصل معنا</h5>
+        <a href="https://wa.me/9647778878421" class="f-phone" target="_blank">
+          <i class="fa-solid fa-phone"></i>
+          0778 878 421
+        </a>
+        <ul>
+          <li><a href="#process">طريقة عملنا</a></li>
+          <li><a href="#why">لماذا VEXORA</a></li>
+          <li><a href="#contact">ابدأ مشروعك</a></li>
+        </ul>
+      </div>
+    </div>
 
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      mobileNav.classList.toggle('open');
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> <span>VEXORA</span>. جميع الحقوق محفوظة — صُنع بـ <span>♥</span> في <span>المغرب</span></p>
+      <div class="footer-bottom-links">
+        <a href="#">سياسة الخصوصية</a>
+        <a href="#">شروط الخدمة</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<div class="wa-wrap">
+  <a href="https://wa.me/9647778878421" class="wa-btn" target="_blank" rel="noopener" aria-label="واتساب">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+  <div class="wa-tip">تواصل معنا عبر واتساب</div>
+</div>
+
+<!-- Back to top -->
+<button id="back-top" aria-label="العودة للأعلى" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+  'use strict';
+
+  /* ── Progress bar ── */
+  const pbar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    pbar.style.transform = `scaleX(${pct})`;
+  }, { passive:true });
+
+  /* ── Year ── */
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ── Header scroll ── */
+  const hdr = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    hdr.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive:true });
+
+  /* ── Burger ── */
+  const burger  = document.getElementById('burger');
+  const mobNav  = document.getElementById('mob-nav');
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobNav.classList.toggle('open');
+  });
+  function closeNav() {
+    burger.classList.remove('open');
+    mobNav.classList.remove('open');
+  }
+  document.addEventListener('click', e => {
+    if (!hdr.contains(e.target)) closeNav();
+  });
+
+  /* ── Typed text ── */
+  const words = ['تطبيق جوال احترافي', 'متجر إلكتروني ناجح', 'نظام إدارة مخصص', 'موقع يبهر الزوار'];
+  let wi = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed-text');
+  function type() {
+    const word = words[wi];
+    el.textContent = deleting ? word.slice(0, --ci) : word.slice(0, ++ci);
+    let delay = deleting ? 60 : 100;
+    if (!deleting && ci === word.length) { delay = 1800; deleting = true; }
+    else if (deleting && ci === 0)       { deleting = false; wi = (wi+1) % words.length; delay = 300; }
+    setTimeout(type, delay);
+  }
+  type();
+
+  /* ── Reveal on scroll ── */
+  const revEls = document.querySelectorAll('.reveal');
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); ro.unobserve(e.target); } });
+  }, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
+  revEls.forEach(el => ro.observe(el));
+
+  /* ── Count up ── */
+  function countUp(el) {
+    const target = +el.dataset.target;
+    const dur = 1800;
+    const start = performance.now();
+    function frame(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(ease * target);
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(frame);
+  }
+  const countEls = document.querySelectorAll('.count-up');
+  const co = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { countUp(e.target); co.unobserve(e.target); } });
+  }, { threshold:.5 });
+  countEls.forEach(e => co.observe(e));
+
+  /* ── Back to top ── */
+  const btt = document.getElementById('back-top');
+  window.addEventListener('scroll', () => {
+    btt.classList.toggle('show', window.scrollY > 400);
+  }, { passive:true });
+
+  /* ── Active nav highlight ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navAs = document.querySelectorAll('.desktop-nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    navAs.forEach(a => {
+      a.style.color = (a.getAttribute('href') === `#${cur}`) ? 'var(--gold)' : '';
     });
+  }, { passive:true });
 
-    function closeMobileNav() {
-      hamburger.classList.remove('open');
-      mobileNav.classList.remove('open');
+  /* ── Hero canvas ── */
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    const ctx    = canvas.getContext('2d');
+    let pts = [], W, H;
+
+    function resize() {
+      W = canvas.width  = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
     }
 
-    // Close mobile nav on outside click
-    document.addEventListener('click', (e) => {
-      if (!header.contains(e.target)) closeMobileNav();
-    });
-
-    // Scroll Fade-in
-    const fadeEls = document.querySelectorAll('.fade-in');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-    fadeEls.forEach(el => observer.observe(el));
-
-    // Contact form
-    const form = document.getElementById('contact-form');
-    const formSuccess = document.getElementById('form-success');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const name = form.name.value.trim();
-      const phone = form.phone.value.trim();
-      const projectType = form['project-type'].value;
-
-      if (!name || !phone || !projectType) {
-        alert('يرجى ملء الحقول المطلوبة: الاسم، رقم الهاتف، ونوع المشروع.');
-        return;
+    function init() {
+      pts = [];
+      const count = Math.floor((W * H) / 14000);
+      for (let i = 0; i < count; i++) {
+        pts.push({
+          x:  Math.random() * W,
+          y:  Math.random() * H,
+          vx: (Math.random() - .5) * .35,
+          vy: (Math.random() - .5) * .35,
+          r:  Math.random() * 1.5 + .5
+        });
       }
+    }
 
-      // Simulate submission
-      const btn = form.querySelector('.btn-submit');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
-
-      setTimeout(() => {
-        form.reset();
-        btn.style.display = 'none';
-        formSuccess.style.display = 'block';
-      }, 1500);
-    });
-
-    // Active nav link on scroll
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav ul li a');
-
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 100;
-        if (window.scrollY >= sectionTop) current = section.getAttribute('id');
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(212,175,55,.5)';
+        ctx.fill();
       });
 
-      navLinks.forEach(link => {
-        link.style.color = '';
-        if (link.getAttribute('href') === `#${current}`) {
-          link.style.color = 'var(--gold)';
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const d  = Math.sqrt(dx*dx + dy*dy);
+          if (d < 130) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(212,175,55,${.12 * (1 - d/130)})`;
+            ctx.lineWidth = .6;
+            ctx.stroke();
+          }
         }
-      });
-    }, { passive: true });
-  </script>
+      }
+      requestAnimationFrame(draw);
+    }
+
+    resize(); init(); draw();
+    window.addEventListener('resize', () => { resize(); init(); });
+  })();
+
+  /* ── Contact form ── */
+  document.getElementById('cform').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name  = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const type  = document.getElementById('f-type').value;
+    if (!name || !phone || !type) {
+      alert('يرجى ملء الحقول الإلزامية: الاسم، رقم الهاتف، ونوع المشروع.');
+      return;
+    }
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
+    setTimeout(() => {
+      this.reset();
+      btn.style.display = 'none';
+      const msg = document.getElementById('form-msg');
+      msg.classList.add('success');
+    }, 1600);
+  });
+</script>
 </body>
 </html>
