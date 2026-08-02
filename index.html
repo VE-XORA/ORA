@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEXORA - Building Digital Experiences</title>
+  <meta name="description" content="شريكك التقني لبناء تطبيقات Android وiOS، مواقع ومتاجر إلكترونية، وأنظمة إدارة مخصصة" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ==============================
+       CSS RESET & VARIABLES
+    ============================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #111111;
+      --bg-card: #141414;
+      --gold: #d4af37;
+      --gold-light: #f0cc60;
+      --gold-dark: #b8942e;
+      --white: #ffffff;
+      --white-80: rgba(255,255,255,0.8);
+      --white-50: rgba(255,255,255,0.5);
+      --white-20: rgba(255,255,255,0.12);
+      --glow: 0 0 20px rgba(212,175,55,0.4);
+      --glow-sm: 0 0 10px rgba(212,175,55,0.25);
+      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+      --radius: 12px;
+      --font: 'Cairo', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-primary);
+      color: var(--white);
+      direction: rtl;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img { max-width: 100%; }
+
+    /* ==============================
+       SCROLLBAR
+    ============================== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+
+    /* ==============================
+       UTILITY
+    ============================== */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 900;
+      color: var(--white);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title span {
+      color: var(--gold);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--white-50);
+      font-size: 1.05rem;
+      margin-bottom: 3.5rem;
+      max-width: 600px;
+      margin-inline: auto;
+      margin-top: 0.4rem;
+    }
+
+    .gold-line {
+      width: 70px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin: 0.8rem auto 0;
+      border-radius: 2px;
+    }
+
+    /* ==============================
+       FADE-IN ANIMATION
+    ============================== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+
+    /* ==============================
+       HEADER
+    ============================== */
+    header {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1000;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212,175,55,0.15);
+      transition: var(--transition);
+    }
+
+    header.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 1.5rem;
+    }
+
+    /* LOGO */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      position: relative;
+      width: 42px;
+      height: 42px;
+    }
+
+    .logo-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-name {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: var(--white);
+    }
+
+    .logo-name span {
+      color: var(--gold);
+    }
+
+    .logo-tagline {
+      font-size: 0.58rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* NAV */
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    nav ul li a {
+      padding: 0.45rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--white-80);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 50%;
+      left: 50%;
+      height: 2px;
+      background: var(--gold);
+      transition: var(--transition);
+      border-radius: 1px;
+    }
+
+    nav ul li a:hover {
+      color: var(--gold);
+    }
+
+    nav ul li a:hover::after {
+      right: 10%;
+      left: 10%;
+    }
+
+    .btn-nav {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: var(--bg-primary) !important;
+      padding: 0.5rem 1.2rem !important;
+      border-radius: 8px !important;
+      font-weight: 700 !important;
+      white-space: nowrap;
+      box-shadow: var(--glow-sm);
+      transition: var(--transition) !important;
+    }
+
+    .btn-nav::after { display: none !important; }
+
+    .btn-nav:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow) !important;
+      color: var(--bg-primary) !important;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      padding: 1rem 0;
+      border-top: 1px solid var(--white-20);
+    }
+
+    .mobile-nav.open { display: flex; }
+
+    .mobile-nav a {
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--white-80);
+      border-bottom: 1px solid var(--white-20);
+      transition: var(--transition);
+    }
+
+    .mobile-nav a:hover { color: var(--gold); padding-right: 1.5rem; }
+
+    .mobile-nav .btn-nav {
+      margin: 0.75rem 1rem 0;
+      text-align: center;
+      border-radius: 8px !important;
+      padding: 0.7rem 1rem !important;
+      color: var(--bg-primary) !important;
+    }
+
+    /* ==============================
+       HERO
+    ============================== */
+    #home {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+
+    /* Grid background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(212,175,55,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212,175,55,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    /* Glow orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      animation: orbFloat 10s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .hero-orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(212,175,55,0.12) 0%, transparent 70%);
+      top: -100px;
+      right: -150px;
+      animation-duration: 12s;
+    }
+
+    .hero-orb-2 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%);
+      bottom: -80px;
+      left: -100px;
+      animation-duration: 9s;
+      animation-delay: -4s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(20px,-20px) scale(1.05); }
+    }
+
+    /* Dots */
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(212,175,55,0.35) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 70% 70% at 80% 20%, black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 80% 20%, black 0%, transparent 100%);
+      animation: dotsFloat 15s linear infinite;
+    }
+
+    @keyframes dotsFloat {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      padding: 5rem 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.3);
+      color: var(--gold);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      animation: badgePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.15); }
+      50% { box-shadow: 0 0 0 8px rgba(212,175,55,0); }
+    }
+
+    .hero-badge i { font-size: 0.7rem; }
+
+    .hero-title {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 1.2rem;
+      color: var(--white);
+    }
+
+    .hero-title .gold-word {
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(212,175,55,0.4);
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.8vw, 1.12rem);
+      color: var(--white-80);
+      margin-bottom: 2.5rem;
+      max-width: 580px;
+      font-weight: 400;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-primary);
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.8rem 1.8rem;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--glow-sm);
+      transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--glow);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.8rem 1.8rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: var(--glow-sm);
+    }
+
+    /* Stats row */
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--white-20);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--white-50);
+      margin-top: 0.2rem;
+    }
+
+    /* ==============================
+       SERVICES
+    ============================== */
+    #services {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+      position: relative;
+    }
+
+    #services::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(212,175,55,0.1);
+      border-radius: var(--radius);
+      padding: 2.2rem 1.8rem;
+      text-align: center;
+      cursor: default;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      background: radial-gradient(circle at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 70%);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: 0 0 30px rgba(212,175,55,0.2), 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+
+    .service-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.2);
+      font-size: 1.7rem;
+      color: var(--gold);
+      transition: var(--transition);
+    }
+
+    .service-card:hover .service-icon {
+      background: rgba(212,175,55,0.15);
+      box-shadow: var(--glow-sm);
+      transform: scale(1.08);
+    }
+
+    .service-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.7rem;
+    }
+
+    .service-card p {
+      font-size: 0.88rem;
+      color: var(--white-50);
+      line-height: 1.7;
+    }
+
+    /* ==============================
+       WHY US
+    ============================== */
+    #why {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 2rem;
+    }
+
+    .why-item {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+
+    .why-icon-wrap {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.2);
+      font-size: 1.3rem;
+      color: var(--gold);
+      transition: var(--transition);
+    }
+
+    .why-item:hover .why-icon-wrap {
+      background: rgba(212,175,55,0.15);
+      box-shadow: var(--glow-sm);
+    }
+
+    .why-text h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.35rem;
+    }
+
+    .why-text p {
+      font-size: 0.85rem;
+      color: var(--white-50);
+      line-height: 1.7;
+    }
+
+    /* ==============================
+       CONTACT
+    ============================== */
+    #contact {
+      padding: 100px 0;
+      background: var(--bg-secondary);
+      position: relative;
+    }
+
+    #contact::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .contact-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--white-80);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--white);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      outline: none;
+      transition: var(--transition);
+      width: 100%;
+      direction: rtl;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--white-50);
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+      background: rgba(212,175,55,0.04);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+    }
+
+    .form-group select {
+      cursor: pointer;
+    }
+
+    .form-group select option {
+      background: var(--bg-card);
+      color: var(--white);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-primary);
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: var(--glow-sm);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    /* ==============================
+       FOOTER
+    ============================== */
+    footer {
+      padding: 3rem 0 1.5rem;
+      background: #080808;
+      border-top: 1px solid rgba(212,175,55,0.1);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--white-50);
+      margin-top: 0.6rem;
+      max-width: 320px;
+    }
+
+    .footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+
+    .footer-phone {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1.05rem;
+      direction: ltr;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 0.7rem;
+    }
+
+    .social-link {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(212,175,55,0.15);
+      color: var(--white-50);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .social-link:hover {
+      background: rgba(212,175,55,0.1);
+      border-color: var(--gold);
+      color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: var(--glow-sm);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--white-20);
+      padding-top: 1.2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--white-50);
+    }
+
+    .footer-bottom span { color: var(--gold); }
+
+    /* ==============================
+       WHATSAPP FLOAT BUTTON
+    ============================== */
+    .wa-float {
+      position: fixed;
+      bottom: 28px;
+      left: 28px;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .wa-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: waPulse 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .wa-btn svg {
+      width: 30px;
+      height: 30px;
+      fill: #ffffff;
+    }
+
+    @keyframes waPulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 4px 25px rgba(37,211,102,0.6), 0 0 0 12px rgba(37,211,102,0); }
+    }
+
+    .wa-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 30px rgba(37,211,102,0.7);
+      animation-play-state: paused;
+    }
+
+    .wa-tooltip {
+      background: rgba(10,10,10,0.95);
+      border: 1px solid rgba(37,211,102,0.3);
+      color: #25D366;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      font-family: var(--font);
+    }
+
+    .wa-float:hover .wa-tooltip {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ==============================
+       LOGO SVG INLINE STYLES
+    ============================== */
+    .v-logo-circle {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 1.5;
+    }
+    .v-solid { fill: url(#goldGradient); }
+    .v-pixel { fill: var(--gold-light); }
+
+    /* ==============================
+       RESPONSIVE
+    ============================== */
+    @media (max-width: 900px) {
+      nav ul { display: none; }
+      .hamburger { display: flex; }
+      .btn-nav-desktop { display: none; }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .footer-right { align-items: center; }
+      .footer-brand p { max-width: 100%; }
+
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+      .contact-wrapper { padding: 2rem 1.2rem; }
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+      .wa-float { bottom: 18px; left: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==============================
+       HEADER
+  ============================== -->
+  <header id="main-header">
+    <div class="container">
+      <div class="nav-inner">
+
+        <!-- Logo -->
+        <a href="#home" class="logo" aria-label="VEXORA">
+          <div class="logo-icon">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f0cc60"/>
+                  <stop offset="100%" stop-color="#b8942e"/>
+                </linearGradient>
+              </defs>
+              <!-- Circle -->
+              <circle cx="22" cy="22" r="20" class="v-logo-circle"/>
+              <!-- Solid V left stroke -->
+              <polygon points="7,10 13,10 22,30 17,30" class="v-solid"/>
+              <!-- Solid V right stroke -->
+              <polygon points="37,10 31,10 22,30 27,30" class="v-solid"/>
+              <!-- Pixel blocks top-right -->
+              <rect x="30" y="7"  width="4" height="4" rx="0.5" class="v-pixel" opacity="1"/>
+              <rect x="35" y="7"  width="4" height="4" rx="0.5" class="v-pixel" opacity="0.7"/>
+              <rect x="30" y="12" width="4" height="4" rx="0.5" class="v-pixel" opacity="0.5"/>
+              <rect x="35" y="12" width="4" height="4" rx="0.5" class="v-pixel" opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-name">VE<span>X</span>ORA</span>
+            <span class="logo-tagline">Building Digital Experiences</span>
+          </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav>
+          <ul>
+            <li><a href="#home">الرئيسية</a></li>
+            <li><a href="#services">خدماتنا</a></li>
+            <li><a href="#why">لماذا نحن</a></li>
+            <li><a href="#contact">تواصل معنا</a></li>
+          </ul>
+        </nav>
+
+        <a href="#contact" class="btn-nav btn-nav-desktop">ابدأ مشروعك</a>
+
+        <!-- Hamburger -->
+        <button class="hamburger" id="hamburger" aria-label="القائمة">
+          <span></span><span></span><span></span>
+        </button>
+
+      </div>
+
+      <!-- Mobile Nav -->
+      <nav class="mobile-nav" id="mobile-nav">
+        <a href="#home" onclick="closeMobileNav()">الرئيسية</a>
+        <a href="#services" onclick="closeMobileNav()">خدماتنا</a>
+        <a href="#why" onclick="closeMobileNav()">لماذا نحن</a>
+        <a href="#contact" onclick="closeMobileNav()">تواصل معنا</a>
+        <a href="#contact" class="btn-nav" onclick="closeMobileNav()">ابدأ مشروعك</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==============================
+       HERO
+  ============================== -->
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-dots"></div>
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge fade-in">
+          <i class="fa-solid fa-circle-bolt"></i>
+          شريكك الرقمي الموثوق
+        </div>
+
+        <h1 class="hero-title fade-in fade-in-delay-1">
+          نحوّل <span class="gold-word">أفكارك</span> إلى تطبيقات<br/>ومواقع احترافية
+        </h1>
+
+        <p class="hero-desc fade-in fade-in-delay-2">
+          شريكك التقني لبناء تطبيقات Android وiOS، مواقع ومتاجر إلكترونية، وأنظمة إدارة مخصصة تُناسب طموحك وتُحقق أهدافك.
+        </p>
+
+        <div class="hero-btns fade-in fade-in-delay-3">
+          <a href="#contact" class="btn-primary">
+            <i class="fa-brands fa-whatsapp"></i>
+            تواصل معنا الآن
+          </a>
+          <a href="#services" class="btn-secondary">
+            <i class="fa-solid fa-grid-2"></i>
+            تصفح خدماتنا
+          </a>
+        </div>
+
+        <div class="hero-stats fade-in fade-in-delay-4">
+          <div class="stat-item">
+            <span class="stat-num">+50</span>
+            <span class="stat-label">مشروع منجز</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">+30</span>
+            <span class="stat-label">عميل راضٍ</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">3+</span>
+            <span class="stat-label">سنوات خبرة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       SERVICES
+  ============================== -->
+  <section id="services">
+    <div class="container">
+      <h2 class="section-title fade-in">خدماتنا <span>المميزة</span></h2>
+      <div class="gold-line fade-in"></div>
+      <p class="section-subtitle fade-in">نقدم حلولاً تقنية متكاملة تُلبّي احتياجات عملك بأعلى معايير الجودة</p>
+
+      <div class="services-grid">
+
+        <div class="service-card fade-in fade-in-delay-1">
+          <div class="service-icon">
+            <i class="fa-solid fa-mobile-screen"></i>
+          </div>
+          <h3>تطوير تطبيقات الجوال</h3>
+          <p>تطبيقات Android وiOS احترافية وسلسة، مُصمَّمة لتجربة مستخدم استثنائية وأداء عالٍ.</p>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-2">
+          <div class="service-icon">
+            <i class="fa-solid fa-globe"></i>
+          </div>
+          <h3>مواقع ومتاجر إلكترونية</h3>
+          <p>مواقع ومتاجر رقمية سريعة ومتجاوبة، مُحسَّنة لمحركات البحث وتحويل الزوار إلى عملاء.</p>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-3">
+          <div class="service-icon">
+            <i class="fa-solid fa-gears"></i>
+          </div>
+          <h3>أنظمة إدارة مخصصة</h3>
+          <p>لوحات تحكم وأنظمة ERP وCRM مُفصَّلة خصيصاً لعملياتك التجارية وتدفق عملك.</p>
+        </div>
+
+        <div class="service-card fade-in fade-in-delay-4">
+          <div class="service-icon">
+            <i class="fa-solid fa-pen-ruler"></i>
+          </div>
+          <h3>تصميم UI/UX عصري</h3>
+          <p>تصاميم جذابة وواجهات سهلة الاستخدام، تعكس هوية علامتك التجارية وتجذب جمهورك.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       WHY US
+  ============================== -->
+  <section id="why">
+    <div class="container">
+      <h2 class="section-title fade-in">لماذا تختار <span>VEXORA</span>؟</h2>
+      <div class="gold-line fade-in"></div>
+      <p class="section-subtitle fade-in">نلتزم بتقديم تجربة تتجاوز توقعاتك في كل مرحلة من مراحل مشروعك</p>
+
+      <div class="why-grid">
+
+        <div class="why-item fade-in fade-in-delay-1">
+          <div class="why-icon-wrap">
+            <i class="fa-solid fa-medal"></i>
+          </div>
+          <div class="why-text">
+            <h4>جودة لا تُنازَع</h4>
+            <p>نضع أعلى المعايير في كل سطر كود وكل تفصيل تصميمي، لأن منتجك يستحق الأفضل.</p>
+          </div>
+        </div>
+
+        <div class="why-item fade-in fade-in-delay-2">
+          <div class="why-icon-wrap">
+            <i class="fa-solid fa-bolt"></i>
+          </div>
+          <div class="why-text">
+            <h4>سرعة في التسليم</h4>
+            <p>نلتزم بالمواعيد المتفق عليها مع ضمان التسليم في الوقت المحدد دون التنازل عن الجودة.</p>
+          </div>
+        </div>
+
+        <div class="why-item fade-in fade-in-delay-3">
+          <div class="why-icon-wrap">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <div class="why-text">
+            <h4>دعم فني مستمر</h4>
+            <p>نحن معك بعد الإطلاق، دعم تقني على مدار الساعة لضمان استمرارية عملك دون انقطاع.</p>
+          </div>
+        </div>
+
+        <div class="why-item fade-in fade-in-delay-4">
+          <div class="why-icon-wrap">
+            <i class="fa-solid fa-tag"></i>
+          </div>
+          <div class="why-text">
+            <h4>أسعار تنافسية</h4>
+            <p>جودة عالية بأسعار منافسة تناسب كل الميزانيات، مع شفافية كاملة ولا تكاليف مخفية.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       CONTACT
+  ============================== -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title fade-in">تواصل <span>معنا</span></h2>
+      <div class="gold-line fade-in"></div>
+      <p class="section-subtitle fade-in">أخبرنا عن مشروعك وسنتواصل معك في أقرب وقت لنضع خطة عملك معاً</p>
+
+      <div class="contact-wrapper fade-in">
+        <form id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">الاسم الكامل</label>
+              <input type="text" id="name" name="name" placeholder="أدخل اسمك الكامل" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">رقم الهاتف</label>
+              <input type="tel" id="phone" name="phone" placeholder="+964 7XX XXX XXXX" required dir="ltr" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="project-type">نوع المشروع</label>
+            <select id="project-type" name="project-type" required>
+              <option value="" disabled selected>اختر نوع مشروعك</option>
+              <option value="app">تطبيق Android / iOS</option>
+              <option value="website">موقع إلكتروني</option>
+              <option value="store">متجر إلكتروني</option>
+              <option value="system">نظام إدارة مخصص</option>
+              <option value="design">تصميم UI/UX</option>
+              <option value="other">أخرى</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">وصف مختصر للمشروع</label>
+            <textarea id="message" name="message" placeholder="اشرح فكرتك ومتطلباتك باختصار..." rows="4"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <i class="fa-solid fa-paper-plane"></i>
+            إرسال الطلب
+          </button>
+
+          <div class="form-success" id="form-success">
+            <i class="fa-solid fa-circle-check" style="font-size:2rem; display:block; margin-bottom:0.5rem;"></i>
+            تم إرسال طلبك بنجاح! سنتواصل معك قريباً.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       FOOTER
+  ============================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#home" class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="goldGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f0cc60"/>
+                    <stop offset="100%" stop-color="#b8942e"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="22" cy="22" r="20" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+                <polygon points="7,10 13,10 22,30 17,30" fill="url(#goldGradient2)"/>
+                <polygon points="37,10 31,10 22,30 27,30" fill="url(#goldGradient2)"/>
+                <rect x="30" y="7"  width="4" height="4" rx="0.5" fill="#f0cc60"/>
+                <rect x="35" y="7"  width="4" height="4" rx="0.5" fill="#f0cc60" opacity="0.7"/>
+                <rect x="30" y="12" width="4" height="4" rx="0.5" fill="#f0cc60" opacity="0.5"/>
+              </svg>
+            </div>
+            <div class="logo-text">
+              <span class="logo-name">VE<span>X</span>ORA</span>
+              <span class="logo-tagline">Building Digital Experiences</span>
+            </div>
+          </a>
+          <p>نبني تجارب رقمية استثنائية تُحوّل رؤيتك إلى واقع ملموس. شريكك التقني الموثوق من الفكرة حتى الإطلاق.</p>
+        </div>
+
+        <div class="footer-right">
+          <a href="tel:+9647778878421" class="footer-phone">
+            <i class="fa-solid fa-phone"></i>
+            0778878421
+          </a>
+          <div class="social-links">
+            <a href="https://wa.me/9647778878421" class="social-link" aria-label="واتساب" target="_blank">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="انستغرام" target="_blank">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="تيليغرام" target="_blank">
+              <i class="fa-brands fa-telegram"></i>
+            </a>
+            <a href="#" class="social-link" aria-label="فيسبوك" target="_blank">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> <span>VEXORA</span>. جميع الحقوق محفوظة. صُنع بـ <span>♥</span> في العراق</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==============================
+       WHATSAPP FLOAT
+  ============================== -->
+  <div class="wa-float">
+    <a href="https://wa.me/9647778878421" class="wa-btn" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+    <div class="wa-tooltip">تواصل معنا واتساب</div>
+  </div>
+
+  <!-- ==============================
+       JAVASCRIPT
+  ============================== -->
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Header scroll effect
+    const header = document.getElementById('main-header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    function closeMobileNav() {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    }
+
+    // Close mobile nav on outside click
+    document.addEventListener('click', (e) => {
+      if (!header.contains(e.target)) closeMobileNav();
+    });
+
+    // Scroll Fade-in
+    const fadeEls = document.querySelectorAll('.fade-in');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Contact form
+    const form = document.getElementById('contact-form');
+    const formSuccess = document.getElementById('form-success');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = form.name.value.trim();
+      const phone = form.phone.value.trim();
+      const projectType = form['project-type'].value;
+
+      if (!name || !phone || !projectType) {
+        alert('يرجى ملء الحقول المطلوبة: الاسم، رقم الهاتف، ونوع المشروع.');
+        return;
+      }
+
+      // Simulate submission
+      const btn = form.querySelector('.btn-submit');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الإرسال...';
+
+      setTimeout(() => {
+        form.reset();
+        btn.style.display = 'none';
+        formSuccess.style.display = 'block';
+      }, 1500);
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav ul li a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) current = section.getAttribute('id');
+      });
+
+      navLinks.forEach(link => {
+        link.style.color = '';
+        if (link.getAttribute('href') === `#${current}`) {
+          link.style.color = 'var(--gold)';
+        }
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>
